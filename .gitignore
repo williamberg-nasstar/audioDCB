@@ -1,0 +1,9 @@
+# git
+.git/
+
+# project
+.eclipse/
+bin/
+
+# any resources lying around
+*.wav
