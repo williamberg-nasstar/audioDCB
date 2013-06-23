@@ -7,51 +7,10 @@ import javax.sound.sampled.AudioInputStream;
 
 public class DCB {
 
-  // got the funk
   public static AudioInputStream shuffle(AudioInputStream in, int samplesOverlap, double paramA) {
-    byte[] inAudio = FileUtility.bytesFromAIS(in);
-
-    // process
-    // randomised stutter
-    Manipulator m = new Manipulator(inAudio, in.getFormat());
-
-    boolean[] allChannels = new boolean[in.getFormat().getChannels()];
-    for (int i = 0; i < allChannels.length; i++) {
-      allChannels[i] = true;
-    }
-    m.setSmoothingLen(samplesOverlap);
-
-    // Random r = new Random();
-    // int clipSizems = r.nextInt((int) (paramA * 500));
-    // int ims = 0;
-    // while(ims + clipSizems < m.getLengthInms())
-    // {
-    // byte[][][] delayClip = m.getRangeOfAudioData(m.getSampleCount(ims),
-    // m.getSampleCount(ims + clipSizems));
-    // m.sSetAudioData(delayClip, m.getSampleCount(ims + clipSizems),
-    // allChannels);
-    //
-    // ims += ims + clipSizems;
-    // clipSizems = r.nextInt((int) (paramA * 500));
-    // }
-
-    m.sSetAudioData(m.getRangeOfAudioData(0, 1000), 2000, allChannels);
-
-    return new AudioInputStream(new ByteArrayInputStream(m.getAudioDataAsSequential()), in.getFormat(),
-        m.getAudioDataAsSequential().length / in.getFormat().getFrameSize());
+    return in;
   }
 
-  // sweet and slow
-  public static AudioInputStream fuck(AudioInputStream in) {
-    return null;
-  }
-
-  // bitch I'll fucking cut you
-  public static AudioInputStream rape(AudioInputStream in) {
-    return null;
-  }
-
-  // cos why the hell not
   public static AudioInputStream reverse(AudioInputStream in) {
     byte[] inAudio = null, outAudio = null;
 
