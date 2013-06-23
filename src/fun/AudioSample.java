@@ -3,8 +3,8 @@ package fun;
 
 public interface AudioSample {
   
-  int getLevel(int channel);
+  int[] getLevels();
   
-  void setLevel(int channel, int level);
+  void setLevels(int... levels);
 
 }

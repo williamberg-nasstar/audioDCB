@@ -4,22 +4,19 @@ import fun.AudioSample;
 
 public class AudioSampleStereo implements AudioSample {
 
-  private int leftLevel;
-  private int rightLevel;
-
-  public AudioSampleStereo(int left, int right) {
-    leftLevel = left;
-    rightLevel = right;
+  private int[] levels;
+  
+  public AudioSampleStereo(int... levels) {
+    setLevels(levels);
   }
 
   @Override
-  public int getLevel(int channel) {
-    return channel == 0 ? leftLevel : rightLevel;
+  public int[] getLevels() {
+    return levels;
   }
 
-  public void setLevel(int channel, int level) {
-    leftLevel = channel == 0 ? level : leftLevel;
-    rightLevel = channel == 1 ? level : rightLevel;
+  public void setLevels(int... levels) {
+    this.levels = levels;
   }
 
 }
