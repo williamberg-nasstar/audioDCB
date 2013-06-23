@@ -1,8 +1,13 @@
 # git
 .git/
 
-# project
+# ide
 .eclipse/
+.classpath
+.project
+.settings
+
+# code
 bin/
 
 # any resources lying around
