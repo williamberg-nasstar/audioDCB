@@ -9,120 +9,111 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import boring.FileManager;
 import fun.DCB;
 
-public class Main
-{
+public class Main {
+
   // args
   private static boolean help;
   private static String inputFilename;
   private static int sampleBlendTime;
   private static double randomness;
   private static int function;
-  
-  public static void main(String... args)
-  {
+
+  public static void main(String... args) {
     parseArgs(args);
 
-    if(help == true)
-    {
+    if (help == true) {
       printHelp();
       return;
     }
-    if(inputFilename == null)
-    {
+    if (inputFilename == null) {
       System.out.println("No input filename given! End.");
       return;
     }
-    if(!(function >= 0 && function <= 3))
-    {
+    if (!(function >= 0 && function <= 3)) {
       System.out.println("Invalid function! End.");
       return;
     }
-    
+
     String outputFilename = "processed-" + inputFilename;
     AudioInputStream inAudioStream = null, outputStream = null;
-    
-    try
-    {
+
+    try {
       inAudioStream = FileManager.getAudioStreamForFileInWD(inputFilename);
-    } catch (UnsupportedAudioFileException e)
-    {
+    }
+    catch (UnsupportedAudioFileException e) {
       System.out.println("Input audio filetype not supported! End.");
       return;
-    } catch (IOException e)
-    {
+    }
+    catch (IOException e) {
       System.out.println(e.getMessage());
       return;
     }
-    
+
     System.out.println("Processing...");
-    
-    switch(function)
-    {
-      case 0:
-        outputStream = DCB.shuffle(inAudioStream, sampleBlendTime, randomness);
-        break;
-        
-      case 1: // eyy
-        outputStream = DCB.fuck(inAudioStream);
-        break;
-        
-      case 2: // bro this is NOT cool,
-      //         cops are gonna come knockin on your door and shit
+
+    switch (function) {
+    case 0:
+      outputStream = DCB.shuffle(inAudioStream, sampleBlendTime, randomness);
+      break;
+
+    case 1: // eyy
+      outputStream = DCB.fuck(inAudioStream);
+      break;
+
+    case 2: // bro this is NOT cool,
+      // cops are gonna come knockin on your door and shit
       // she was givin me the eyes earlier bruv, trust blud...
-        outputStream = DCB.rape(inAudioStream);
-        break;
-        
-      case 3:
-        outputStream = DCB.reverse(inAudioStream);
-        break;
-        
-      case 4:
-        outputStream = DCB.test(inAudioStream);
-        break;
+      outputStream = DCB.rape(inAudioStream);
+      break;
+
+    case 3:
+      outputStream = DCB.reverse(inAudioStream);
+      break;
+
+    case 4:
+      outputStream = DCB.test(inAudioStream);
+      break;
     }
 
     File outFilehandle = FileManager.getFilehandleForNewFile(outputFilename);
 
-    try
-    {
+    try {
       FileManager.write(outputStream, outFilehandle);
-    } catch (Exception e)
-    {
+    }
+    catch (Exception e) {
       System.out.println(e.getMessage());
     }
-    
+
     System.out.println("Done. Output file: " + outputFilename);
   }
-  
-  private static void parseArgs(String... args)
-  {
+
+  private static void parseArgs(String... args) {
     // TODO: Catch parsing exceptions
-    
+
     function = -1;
-    
-    for(int i=0;i<args.length;i++)
-    {
-      if(args[i].equals("--help"))
-      {
+
+    for (int i = 0; i < args.length; i++) {
+      if (args[i].equals("--help")) {
         help = true;
-      } else if(args[i].equals("-i"))
+      }
+      else if (args[i].equals("-i")) {
+        inputFilename = args[i + 1];
+      }
+      else if (args[i].equals("-f")) {
+        function = Integer.parseInt(args[i + 1]);
+      }
+      else if (args[i].equals("-c")) // number of samples over which to blend
+                                     // slices
       {
-        inputFilename = args[i+1];
-      } else if(args[i].equals("-f"))
-      {
-        function = Integer.parseInt(args[i+1]);
-      } else if(args[i].equals("-c")) // number of samples over which to blend slices
-      {
-        sampleBlendTime = Integer.parseInt(args[i+1]);
-      } else if(args[i].equals("-r"))
-      {
-        randomness = Double.parseDouble(args[i+1]);
+        sampleBlendTime = Integer.parseInt(args[i + 1]);
+      }
+      else if (args[i].equals("-r")) {
+        randomness = Double.parseDouble(args[i + 1]);
       }
     }
   }
 
-  private static void printHelp()
-  {
+  private static void printHelp() {
     System.out.println("--help: print this");
     System.out.println("-i: input filename");
     System.out.println("-f: function #:");
