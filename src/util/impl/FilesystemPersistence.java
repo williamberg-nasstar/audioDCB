@@ -127,10 +127,10 @@ public class FilesystemPersistence implements Persistence {
         audioData[(i * 2) + 1] = msbs;
       }
     }
-    else if (formatFiletype.equals(StereoAudioSample.class)) {
+    else if (arrayType.equals(StereoAudioSample.class)) {
       channels = 2;
-      MonoAudioSample[] sampleArray = (MonoAudioSample[]) audio.getRange(0, audio.getLength());
-      audioData = new byte[sampleArray.length * 2];
+      StereoAudioSample[] sampleArray = (StereoAudioSample[]) audio.getRange(0, audio.getLength());
+      audioData = new byte[sampleArray.length * 4];
 
       for (int i = 0; i < sampleArray.length; i++) {
         byte leftLsbs = (byte) (sampleArray[i].getLevels()[0] & ((1 << 8) - 1));
@@ -150,7 +150,7 @@ public class FilesystemPersistence implements Persistence {
 
     AudioFormat af = new AudioFormat(44100, 16, channels, true, false);
 
-    // arg 3 as copied from AudioFormat.class
+    // attempting to set arg 3 to something else will probably fail
     AudioInputStream ais = new AudioInputStream(new ByteArrayInputStream(audioData), af, -1);
 
     try {
