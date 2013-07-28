@@ -1,15 +1,16 @@
 package util;
 
-import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFileFormat.Type;
 
-import fun.AudioArray;
+import data.AudioArray;
+import data.AudioSample;
+
 
 public interface Persistence {
 
-  <T extends AudioArray> T load(AudioFileFormat format, String filename, T arrayType) throws PersistenceException;
+  <T extends AudioSample> AudioArray<T> load(Type format, Class<T> arrayType, String filename) throws PersistenceException;
 
-  void save(AudioArray audio, Type formatFiletype, String filename) throws PersistenceException;
+  <T extends AudioSample> void save(AudioArray<T> audio, Type formatFiletype, Class<T> arrayType, String filename) throws PersistenceException;
 
   public class PersistenceException extends Exception {
 

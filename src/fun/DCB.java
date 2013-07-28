@@ -5,6 +5,9 @@ import java.io.ByteArrayInputStream;
 
 import javax.sound.sampled.AudioInputStream;
 
+/**
+ * Ignore this.
+ */
 public class DCB {
 
   public static AudioInputStream shuffle(AudioInputStream in, int samplesOverlap, double paramA) {
@@ -14,7 +17,7 @@ public class DCB {
   public static AudioInputStream reverse(AudioInputStream in) {
     byte[] inAudio = null, outAudio = null;
 
-    inAudio = FileUtility.bytesFromAIS(in);
+//    inAudio = FileUtility.bytesFromAIS(in);
 
     outAudio = new byte[inAudio.length];
     for (int i = (int) ((in.getFrameLength() - 1) * in.getFormat().getFrameSize()), j = 0; i >= 0; i -= in.getFormat()
@@ -33,7 +36,8 @@ public class DCB {
 
   // test
   public static AudioInputStream test(AudioInputStream in) {
-    byte[] inAudio = FileUtility.bytesFromAIS(in);
+//    byte[] inAudio = FileUtility.bytesFromAIS(in);
+    byte[] inAudio = null;
 
     // process
     // randomised stutter

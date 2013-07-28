@@ -1,4 +1,4 @@
-package fun;
+package data;
 
 
 public interface AudioSample {

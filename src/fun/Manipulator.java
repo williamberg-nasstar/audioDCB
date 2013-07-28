@@ -45,7 +45,8 @@ public class Manipulator {
 
   public void setAudioInputStream(AudioInputStream ais) {
     audioFormat = ais.getFormat();
-    setAudioDataFromSequential(FileUtility.bytesFromAIS(ais));
+//    setAudioDataFromSequential(FileUtility.bytesFromAIS(ais));
+    setAudioDataFromSequential(null);
   }
 
   // converts audioData into a sequential form, perhaps for file writing

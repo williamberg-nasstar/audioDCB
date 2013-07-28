@@ -1,22 +1,23 @@
 package cli;
 
-import java.io.File;
-import java.io.IOException;
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFileFormat.Type;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.UnsupportedAudioFileException;
+import data.AudioArray;
+import data.impl.MonoAudioSample;
 
-import util.FileManager;
-
-import fun.DCB;
+import util.Persistence;
+import util.Persistence.PersistenceException;
+import util.impl.FilesystemPersistence;
 
 public class Main {
 
   // args
   private static boolean help;
+  private static String workingDirectory;
   private static String inputFilename;
-  private static int sampleBlendTime;
-  private static double randomness;
+  
+  private static Persistence persistence;
 
   public static void main(String... args) {
     parseArgs(args);
@@ -25,40 +26,39 @@ public class Main {
       printHelp();
       return;
     }
-    if (inputFilename == null) {
-      System.out.println("No input filename given! End.");
+    if (workingDirectory == null) {
+      System.out.println("No working directory given!");
       return;
+    }
+    if (inputFilename == null) {
+      System.out.println("No input filename given!");
+      return;
+    }
+    
+    try {
+      persistence = new FilesystemPersistence(workingDirectory);
+    }
+    catch (PersistenceException e) {
+      e.printStackTrace();
+    }
+    
+    AudioArray<MonoAudioSample> audioArray = null;
+    
+    try {
+      audioArray = persistence.load(AudioFileFormat.Type.WAVE, MonoAudioSample.class, inputFilename);
+    }
+    catch (PersistenceException e) {
+      e.printStackTrace();
     }
 
     String outputFilename = "processed-" + inputFilename;
-    AudioInputStream inAudioStream = null, outputStream = null;
 
     try {
-      inAudioStream = FileManager.getAudioStreamForFileInWD(inputFilename);
+      persistence.save(audioArray, Type.WAVE, MonoAudioSample.class, outputFilename);
     }
-    catch (UnsupportedAudioFileException e) {
-      System.out.println("Input audio filetype not supported! End.");
-      return;
+    catch (PersistenceException e) {
+      e.printStackTrace();
     }
-    catch (IOException e) {
-      System.out.println(e.getMessage());
-      return;
-    }
-
-    System.out.println("Processing...");
-
-    outputStream = DCB.shuffle(inAudioStream, sampleBlendTime, randomness);
-
-    File outFilehandle = FileManager.getFilehandleForNewFile(outputFilename);
-
-    try {
-      FileManager.write(outputStream, outFilehandle);
-    }
-    catch (Exception e) {
-      System.out.println(e.getMessage());
-    }
-
-    System.out.println("Done. Output file: " + outputFilename);
   }
 
   private static void parseArgs(String... args) {
@@ -66,24 +66,20 @@ public class Main {
       if (args[i].equals("--help")) {
         help = true;
       }
+      else if (args[i].equals("-d")) {
+        workingDirectory = args[i + 1];
+        i++;
+      }
       else if (args[i].equals("-i")) {
         inputFilename = args[i + 1];
-      }
-      else if (args[i].equals("-c")) // number of samples over which to blend
-                                     // slices
-      {
-        sampleBlendTime = Integer.parseInt(args[i + 1]);
-      }
-      else if (args[i].equals("-r")) {
-        randomness = Double.parseDouble(args[i + 1]);
+        i++;
       }
     }
   }
 
   private static void printHelp() {
     System.out.println("--help: print this");
-    System.out.println("-i: input filename");
-    System.out.println("-c: number of samples over which to blend slices");
-    System.out.println("-r: parameter A");
+    System.out.println("-d: input file directory");
+    System.out.println("-i: input file path");
   }
 }
