@@ -10,6 +10,8 @@ public interface Persistence {
 
   <T extends AudioSample> AudioArray<T> load(Type format, Class<T> arrayType, String filename) throws PersistenceException;
 
+  <T extends AudioSample> AudioArray<T> load(String filename) throws PersistenceException;
+
   <T extends AudioSample> void save(AudioArray<T> audio, Type formatFiletype, Class<T> arrayType, String filename) throws PersistenceException;
 
   public class PersistenceException extends Exception {
