@@ -12,3 +12,6 @@ bin/
 
 # any resources lying around
 *.wav
+
+# Windows being a bitch
+Thumbs.db
