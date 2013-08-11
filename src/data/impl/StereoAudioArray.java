@@ -8,9 +8,11 @@ import data.AudioArray;
 public class StereoAudioArray implements AudioArray<StereoAudioSample> {
 
   private StereoAudioSample[] array;
+  private int sampleRate;
 
-  public StereoAudioArray(StereoAudioSample[] array) {
+  public StereoAudioArray(StereoAudioSample[] array, int sampleRate) {
     this.array = array;
+    this.sampleRate = sampleRate; 
   }
   
   @Override
@@ -36,6 +38,10 @@ public class StereoAudioArray implements AudioArray<StereoAudioSample> {
       sb.append('\n');
     }
     return sb.toString();
+  }
+
+  public int getSampleRate() {
+    return sampleRate;
   }
 
 }

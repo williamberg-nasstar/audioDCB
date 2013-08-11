@@ -9,4 +9,6 @@ public interface AudioArray<T extends AudioSample> {
   
   int getLength();
   
+  int getSampleRate();
+
 }
