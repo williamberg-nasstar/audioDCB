@@ -1,7 +1,7 @@
 package data;
 
 
-public interface AudioArray<T> {
+public interface AudioArray<T extends AudioSample> {
 
   T[] getRange(int start, int end);
   
